@@ -1,5 +1,6 @@
 import random
 
+
 class No():
     def __init__(self, valor):
         self.valor = valor
@@ -11,6 +12,7 @@ class No():
 class Arvore():
     def __init__(self):
         self.raiz = None
+        self.totalnos = 0
     
 
     def inorder(self, atual):
@@ -22,7 +24,8 @@ class Arvore():
 
     def preorder(self, atual):
         if(atual != None):
-            print(atual.valor)
+            print("valor: ",atual.valor)
+            print("endereco: ",atual.adress,"\n")
             self.preorder(atual.esq)
             self.preorder(atual.dir)
 
@@ -30,7 +33,8 @@ class Arvore():
         if(atual != None):
             self.posorder(atual.esq)
             self.posorder(atual.dir)
-            print(atual.valor)
+            print("valor: ",atual.valor)
+            print("endereco: ",atual.adress,"\n")
     
     def inserir(self, atual, novo, adress):
         if atual != None:
@@ -41,6 +45,7 @@ class Arvore():
                 else:
                     novo.adress = adress
                     atual.dir = novo
+                    arvore.totalnos += 1
             else:
                 adress = adress*10
                 if atual.esq != None:
@@ -48,16 +53,55 @@ class Arvore():
                 else:
                     novo.adress = adress
                     atual.esq = novo
+                    arvore.totalnos += 1
         else:
             arvore.raiz = novo
             arvore.raiz.adress = adress
+            arvore.totalnos += 1
     
+    def buscar(self, atual, valor):
+        if(atual.valor != valor):
+            if (valor > atual.valor):
+                if(atual.dir != None):
+                    self.buscar(atual.dir, valor)
+                else:
+                    print("Esse valor nao existe")
+            else:
+                if(atual.esq != None):
+                    self.buscar(atual.esq, valor)
+                else:
+                    print("Esse valor nao existe")
+        else:
+            return atual.adress
+    
+    def nomaximo(self, atual):
+        if(atual.dir != None):
+            return self.nomaximo(atual.dir)
+        else:
+            return atual.valor
 
-    
+
+    def nominimo(self, atual):
+        if(atual.esq != None):
+            return self.nominimo(atual.esq)
+        else:
+            return atual.valor
+
+    def totalno(self, atual, parada):
+        global cont
+        print(f'cont: {cont}')
+        if(atual != None):
+            self.totalno(atual.esq, cont, parada)
+            self.totalno(atual.dir, cont, parada)
+            if atual.valor == parada:
+                print(f'total de nós: {cont}')
+                return cont 
+
     def remover(self, atual, pai, alvo):
 
         #função para repassar os valores de lugar
         def herda(alvo, pai, herdeiro):
+            arvore.totalnos -=1
             herdeiro.adress = alvo.adress
             if(pai != None):
                 if(alvo.dir != herdeiro):
@@ -70,7 +114,6 @@ class Arvore():
                     pai.esq = herdeiro
             else:
                 arvore.raiz = None
-
 
         def repoe(herdeiro, herdeiropai, repositor):
             repositor.adress = herdeiro.adress
@@ -85,12 +128,12 @@ class Arvore():
                 if(atual.dir != None):
                     self.remover(atual.dir, atual, alvo)
                 else:
-                    print("Esse valor não existe")
+                    print("Esse valor nao existe")
             else:
                 if(atual.esq != None):
                     self.remover(atual.esq, atual, alvo)
                 else:
-                    print("Esse valor não existe")
+                    print("Esse valor nao existe")
         else:
             alvo = atual
         # DELETA
@@ -132,8 +175,10 @@ class Arvore():
             else:
                 if(pai.valor > alvo.valor):
                     pai.esq = None
+                    arvore.totalnos -= 1
                 else:
                     pai.dir = None
+                    arvore.totalnos -= 1
 
 
 array = []
@@ -154,12 +199,15 @@ for i in range(0,15):
 
 
 
-print("\n\nem ordem")
-arvore.inorder(arvore.raiz)
+#print("\n\nem ordem")
+arvore.preorder(arvore.raiz)
 
 #print("\n\nremove:")
-arvore.remover(arvore.raiz, None, 5)
+#arvore.remover(arvore.raiz, None, 5)
 
-print("\n\nem ordem")
-arvore.inorder(arvore.raiz)
+#print("\n\nem ordem")
+#arvore.inorder(arvore.raiz)
 
+#arvore.buscar(arvore.raiz, 21)
+#print(f'total de nos = {arvore.totalnos}')
+#print(arvore.nomaximo(arvore.raiz))
