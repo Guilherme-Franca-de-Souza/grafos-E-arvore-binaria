@@ -12,7 +12,6 @@ class No():
 class Arvore():
     def __init__(self):
         self.raiz = None
-        self.totalnos = 0
     
 
     def inorder(self, atual):
@@ -45,7 +44,6 @@ class Arvore():
                 else:
                     novo.adress = adress
                     atual.dir = novo
-                    arvore.totalnos += 1
             else:
                 adress = adress*10
                 if atual.esq != None:
@@ -53,11 +51,9 @@ class Arvore():
                 else:
                     novo.adress = adress
                     atual.esq = novo
-                    arvore.totalnos += 1
         else:
             arvore.raiz = novo
             arvore.raiz.adress = adress
-            arvore.totalnos += 1
     
     def buscar(self, atual, valor):
         if(atual.valor != valor):
@@ -87,21 +83,53 @@ class Arvore():
         else:
             return atual.valor
 
-    def totalno(self, atual, parada):
-        global cont
-        print(f'cont: {cont}')
-        if(atual != None):
-            self.totalno(atual.esq, cont, parada)
-            self.totalno(atual.dir, cont, parada)
-            if atual.valor == parada:
-                print(f'total de nós: {cont}')
-                return cont 
+    def totalno(self, atual):
+        if(atual == None):
+            return 0
+        else:
+            if(atual.esq != None and atual.dir != None):
+                return 1 + self.totalno(atual.esq) + self.totalno(atual.dir)
+            elif(atual.esq != None and atual.dir == None):
+                return 1 + self.totalno(atual.esq) 
+            elif(atual.esq == None and atual.dir != None):
+                return 1 + self.totalno(atual.dir)
+            else:
+                return 1
+
+    def totalfolhas(self, atual):
+        if(atual == None):
+            return 0
+        else:
+            if(atual.esq != None and atual.dir != None):
+                return 0 + self.totalfolhas(atual.esq) + self.totalfolhas(atual.dir)
+            elif(atual.esq != None and atual.dir == None):
+                return 0 + self.totalfolhas(atual.esq) 
+            elif(atual.esq == None and atual.dir != None):
+                return 0 + self.totalfolhas(atual.dir)
+            else:
+                return 1        
+
+    def folhas(self, atual):
+        def lista(valor):
+            folhas.append(valor)
+
+        if(atual == None):
+            return 0
+        else:
+            if(atual.esq != None and atual.dir != None):
+                return self.folhas(atual.esq) + self.folhas(atual.dir)
+            elif(atual.esq != None and atual.dir == None):
+                return self.folhas(atual.esq) 
+            elif(atual.esq == None and atual.dir != None):
+                return self.folhas(atual.dir)
+            else:
+                lista(atual.valor)
+                return 1
 
     def remover(self, atual, pai, alvo):
 
         #função para repassar os valores de lugar
         def herda(alvo, pai, herdeiro):
-            arvore.totalnos -=1
             herdeiro.adress = alvo.adress
             if(pai != None):
                 if(alvo.dir != herdeiro):
@@ -175,10 +203,9 @@ class Arvore():
             else:
                 if(pai.valor > alvo.valor):
                     pai.esq = None
-                    arvore.totalnos -= 1
                 else:
                     pai.dir = None
-                    arvore.totalnos -= 1
+
 
 
 array = []
@@ -200,7 +227,13 @@ for i in range(0,15):
 
 
 #print("\n\nem ordem")
-arvore.preorder(arvore.raiz)
+#print(arvore.totalno(arvore.raiz))
+#arvore.remover(arvore.raiz, None, 5)
+arvore.inorder(arvore.raiz)
+folhas = []
+arvore.folhas(arvore.raiz)
+print(f"as folhas sao: {folhas}")
+
 
 #print("\n\nremove:")
 #arvore.remover(arvore.raiz, None, 5)
