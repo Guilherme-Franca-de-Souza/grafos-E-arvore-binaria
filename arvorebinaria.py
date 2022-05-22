@@ -126,6 +126,39 @@ class Arvore():
                 lista(atual.valor)
                 return 1
 
+    def prealtura(self, atual, valor):
+        if(atual.valor != valor):
+            if (valor > atual.valor):
+                if(atual.dir != None):
+                   return self.prealtura(atual.dir, valor)
+                else:
+                    print("Esse valor nao existe")
+            else:
+                if(atual.esq != None):
+                   return self.prealtura(atual.esq, valor)
+                else:
+                    print("Esse valor nao existe")
+        else:
+            return self.altura(atual) - 1
+
+
+    def altura(self, atual):
+        if(atual.esq != None and atual.dir != None):
+            direita = self.altura(atual.dir)
+            esquerda = self.altura(atual.esq)
+            if(direita > esquerda):
+                return 1 + self.altura(atual.dir)
+            else:
+                return 1 + self.altura(atual.esq)
+        elif(atual.esq != None and atual.dir == None):
+            return 1 + self.altura(atual.esq) 
+        elif(atual.esq == None and atual.dir != None):
+            return 1 + self.altura(atual.dir)
+        else:
+            return 1
+
+
+
     def remover(self, atual, pai, alvo):
 
         #função para repassar os valores de lugar
@@ -231,8 +264,9 @@ for i in range(0,15):
 #arvore.remover(arvore.raiz, None, 5)
 arvore.inorder(arvore.raiz)
 folhas = []
-arvore.folhas(arvore.raiz)
-print(f"as folhas sao: {folhas}")
+#arvore.folhas(arvore.raiz)
+#print(f"as folhas sao: {folhas}")
+print(arvore.prealtura(arvore.raiz, 4))
 
 
 #print("\n\nremove:")
