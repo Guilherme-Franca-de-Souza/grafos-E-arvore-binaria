@@ -1,4 +1,5 @@
 import random
+import os
 
 
 class No():
@@ -54,30 +55,36 @@ class Arvore():
         else:
             arvore.raiz = novo
             arvore.raiz.adress = adress
+        return "\nno inserido com sucesso\n"
     
     def buscar(self, atual, valor):
+        if(atual == None):
+            return "arvore vazia"
         if(atual.valor != valor):
             if (valor > atual.valor):
                 if(atual.dir != None):
-                    self.buscar(atual.dir, valor)
+                    return self.buscar(atual.dir, valor)
                 else:
-                    print("Esse valor nao existe")
+                    return "Esse valor nao existe"
             else:
                 if(atual.esq != None):
-                    self.buscar(atual.esq, valor)
+                    return self.buscar(atual.esq, valor)
                 else:
-                    print("Esse valor nao existe")
+                    return "Esse valor nao existe"
         else:
-            return atual.adress
+            return ("posicao do no: ", atual.adress)
     
     def nomaximo(self, atual):
+        if(atual == None):
+            return "arvore vazia"
         if(atual.dir != None):
             return self.nomaximo(atual.dir)
         else:
             return atual.valor
 
-
     def nominimo(self, atual):
+        if(atual == None):
+            return "arvore vazia"
         if(atual.esq != None):
             return self.nominimo(atual.esq)
         else:
@@ -112,9 +119,8 @@ class Arvore():
     def folhas(self, atual):
         def lista(valor):
             folhas.append(valor)
-
         if(atual == None):
-            return 0
+            return "arvore vazia"
         else:
             if(atual.esq != None and atual.dir != None):
                 return self.folhas(atual.esq) + self.folhas(atual.dir)
@@ -126,21 +132,39 @@ class Arvore():
                 lista(atual.valor)
                 return 1
 
-    def prealtura(self, atual, valor):
+    def pre(self, atual, valor):
+        if(atual == None):
+            return "arvore vazia"
         if(atual.valor != valor):
             if (valor > atual.valor):
                 if(atual.dir != None):
-                   return self.prealtura(atual.dir, valor)
+                   return self.pre(atual.dir, valor)
                 else:
-                    print("Esse valor nao existe")
+                    return ("Esse valor nao existe")
             else:
                 if(atual.esq != None):
-                   return self.prealtura(atual.esq, valor)
+                   return self.pre(atual.esq, valor)
                 else:
-                    print("Esse valor nao existe")
+                    return ("Esse valor nao existe")
         else:
             return self.altura(atual) - 1
 
+    def nivel(self, atual, valor):
+        if(atual == None):
+            return "arvore vazia"
+        if(atual.valor != valor):
+            if (valor > atual.valor):
+                if(atual.dir != None):
+                    return 1 + self.nivel(atual.dir, valor)
+                else:
+                    return "Esse valor nao existe"
+            else:
+                if(atual.esq != None):
+                    return 1 + self.nivel(atual.esq, valor)
+                else:
+                    return "Esse valor nao existe"
+        else:
+            return 0
 
     def altura(self, atual):
         if(atual.esq != None and atual.dir != None):
@@ -157,10 +181,9 @@ class Arvore():
         else:
             return 1
 
-
-
     def remover(self, atual, pai, alvo):
-
+        if(atual == None):
+            return "arvore vazia"
         #função para repassar os valores de lugar
         def herda(alvo, pai, herdeiro):
             herdeiro.adress = alvo.adress
@@ -189,12 +212,12 @@ class Arvore():
                 if(atual.dir != None):
                     self.remover(atual.dir, atual, alvo)
                 else:
-                    print("Esse valor nao existe")
+                    return "Esse valor nao existe"
             else:
                 if(atual.esq != None):
                     self.remover(atual.esq, atual, alvo)
                 else:
-                    print("Esse valor nao existe")
+                    return "Esse valor nao existe"
         else:
             alvo = atual
         # DELETA
@@ -240,33 +263,124 @@ class Arvore():
                     pai.dir = None
 
 
+arvore = Arvore()
 
+
+def digite():
+    try:
+        print("Digite o valor:")
+        valor = input()
+        valor = int(valor)
+        return valor
+    except:
+        print("valor invalido")
+        limpa()
+
+def limpa():
+    input("\n\n\ndigite enter para continuar...")
+    os.system("cls")
+
+while True:
+    os.system("cls")
+    print("Digite uma opção:\n")
+    print("(0) - Sair\n")
+    print("(1) - Inserir no")
+    print("(2) - Buscar posicao de um no")
+    print("(3) - Percorrer arvore em ordem")
+    print("(4) - Percorrer arvore pre ordem")
+    print("(5) - Percorrer arvore pos ordem")
+    print("(6) - Mostrar quantidade de nos")
+    print("(7) - Mostrar quantidade de folhas")
+    print("(8) - Mostrar quais nos sao folhas")
+    print("(9) - Mostrar altura de um no")
+    print("(10) - Mostrar nivel de um no")
+    print("(11) - Remover no")
+    
+    folhas = []
+    op = input()
+
+    
+    op = int(op)
+    if(op < 0 or op > 11):
+        print("opcao invalida")
+    else:
+        if op == 0:
+            limpa()
+            break
+        elif op == 1:
+            valor = digite()
+            no = No(valor)
+            print(arvore.inserir(arvore.raiz, no, 1))
+            limpa()
+        elif op == 2:
+            valor = digite()
+            print(arvore.buscar(arvore.raiz, valor))
+            limpa()
+        elif op == 3:
+            print("em ordem:\n")
+            arvore.inorder(arvore.raiz)
+            limpa()
+        elif op == 4:
+            print("pre ordem:\n")
+            arvore.preorder(arvore.raiz)
+            limpa()
+        elif op == 5:
+            print("pos ordem:\n")
+            arvore.posorder(arvore.raiz)
+            limpa()
+        elif op == 6:
+            print("Quantidade de nos:\n")
+            print(arvore.totalno(arvore.raiz))
+            limpa()
+        elif op == 7:
+            print("Quantidade de folhas:\n")
+            print(arvore.totalfolhas(arvore.raiz))
+            limpa()
+        elif op == 8:
+            print("Noses que sao folhas:\n")
+            print(arvore.folhas(arvore.raiz))
+            limpa()
+        elif op == 9:
+            valor = digite()
+            print(arvore.pre(arvore.raiz, valor))
+            limpa()
+        elif op == 10:
+            valor = digite()
+            print(arvore.nivel(arvore.raiz, valor))
+            limpa()
+        elif op == 11:
+            valor = digite()
+            print(arvore.remover(arvore.raiz, None, valor))
+            limpa()
+    
+
+
+
+
+
+
+
+"""
 array = []
-
 for i in range(0,15):
     array.append(i)
 
-arvore = Arvore()
+
 
 
 for i in range(0,15):
     valor = random.choice(array)
     array.remove(valor)
     no = No(valor)
-    arvore.inserir(arvore.raiz, no, 1)
-
-
-
-
-
+    arvore.inserir(arvore.raiz, no, 1)"""
 #print("\n\nem ordem")
 #print(arvore.totalno(arvore.raiz))
 #arvore.remover(arvore.raiz, None, 5)
-arvore.inorder(arvore.raiz)
-folhas = []
+#arvore.inorder(arvore.raiz)
+
 #arvore.folhas(arvore.raiz)
 #print(f"as folhas sao: {folhas}")
-print(arvore.prealtura(arvore.raiz, 4))
+#print(arvore.pre(arvore.raiz, 4))
 
 
 #print("\n\nremove:")
@@ -275,6 +389,6 @@ print(arvore.prealtura(arvore.raiz, 4))
 #print("\n\nem ordem")
 #arvore.inorder(arvore.raiz)
 
-#arvore.buscar(arvore.raiz, 21)
+#print(arvore.nivel(arvore.raiz, 2))
 #print(f'total de nos = {arvore.totalnos}')
 #print(arvore.nomaximo(arvore.raiz))
