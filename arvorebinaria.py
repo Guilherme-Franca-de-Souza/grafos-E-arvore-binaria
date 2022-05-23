@@ -18,7 +18,7 @@ class Arvore():
     def inorder(self, atual):
         if(atual != None):
             self.inorder(atual.esq)
-            print("valor: ",atual.valor)
+            print("valor: ",atual.valor) 
             print("endereco: ",atual.adress,"\n")
             self.inorder(atual.dir)
 
@@ -184,8 +184,12 @@ class Arvore():
     def remover(self, atual, pai, alvo):
         if(atual == None):
             return "arvore vazia"
-        #função para repassar os valores de lugar
+        #funções para repassar os valores de lugar
         def herda(alvo, pai, herdeiro):
+            print("\n\nHerda")
+            print("alvo:",alvo.valor)
+            print("pai:",pai.valor)
+            print("herdeiro:",herdeiro.valor)
             herdeiro.adress = alvo.adress
             if(pai != None):
                 if(alvo.dir != herdeiro):
@@ -197,9 +201,17 @@ class Arvore():
                 else:
                     pai.esq = herdeiro
             else:
-                arvore.raiz = None
+                arvore.raiz = herdeiro
+                if(alvo.dir != herdeiro):
+                    herdeiro.dir = alvo.dir
+                if(alvo.esq != herdeiro):
+                    herdeiro.esq = alvo.esq
 
         def repoe(herdeiro, herdeiropai, repositor):
+            print("\n\nRepoe")
+            print("herdeiro:",herdeiro.valor)
+            print("herdeiropai:",herdeiropai.valor)
+            print("repositor:",repositor.valor)
             repositor.adress = herdeiro.adress
             if(herdeiro.valor > herdeiropai.valor):
                 herdeiropai.dir = repositor 
@@ -210,11 +222,15 @@ class Arvore():
         if(atual.valor != alvo):
             if (alvo > atual.valor):
                 if(atual.dir != None):
+                    print("agora o pai é:",atual.valor)
+                    input()
                     self.remover(atual.dir, atual, alvo)
                 else:
                     return "Esse valor nao existe"
             else:
                 if(atual.esq != None):
+                    print("agora o pai é:",atual.valor)
+                    input()
                     self.remover(atual.esq, atual, alvo)
                 else:
                     return "Esse valor nao existe"
@@ -265,6 +281,16 @@ class Arvore():
 
 arvore = Arvore()
 
+array = []
+for i in range(0,15):
+    array.append(i)
+
+for i in range(0,15):
+    valor = random.choice(array)
+    array.remove(valor)
+    no = No(valor)
+    arvore.inserir(arvore.raiz, no, 1)
+
 
 def digite():
     try:
@@ -278,10 +304,10 @@ def digite():
 
 def limpa():
     input("\n\n\ndigite enter para continuar...")
-    os.system("cls")
+    #os.system("cls")
 
 while True:
-    os.system("cls")
+    #os.system("cls")
     print("Digite uma opção:\n")
     print("(0) - Sair\n")
     print("(1) - Inserir no")
@@ -338,7 +364,8 @@ while True:
             limpa()
         elif op == 8:
             print("Noses que sao folhas:\n")
-            print(arvore.folhas(arvore.raiz))
+            arvore.folhas(arvore.raiz)
+            print(folhas)
             limpa()
         elif op == 9:
             valor = digite()
@@ -350,7 +377,7 @@ while True:
             limpa()
         elif op == 11:
             valor = digite()
-            print(arvore.remover(arvore.raiz, None, valor))
+            arvore.remover(arvore.raiz, None, valor)
             limpa()
     
 
