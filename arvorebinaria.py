@@ -72,7 +72,7 @@ class Arvore():
                 else:
                     return "Esse valor nao existe"
         else:
-            return ("posicao do no: ", atual.adress)
+            return atual.adress
     
     def nomaximo(self, atual):
         if(atual == None):
@@ -186,10 +186,6 @@ class Arvore():
             return "arvore vazia"
         #funções para repassar os valores de lugar
         def herda(alvo, pai, herdeiro):
-            print("\n\nHerda")
-            print("alvo:",alvo.valor)
-            print("pai:",pai.valor)
-            print("herdeiro:",herdeiro.valor)
             herdeiro.adress = alvo.adress
             if(pai != None):
                 if(alvo.dir != herdeiro):
@@ -208,10 +204,6 @@ class Arvore():
                     herdeiro.esq = alvo.esq
 
         def repoe(herdeiro, herdeiropai, repositor):
-            print("\n\nRepoe")
-            print("herdeiro:",herdeiro.valor)
-            print("herdeiropai:",herdeiropai.valor)
-            print("repositor:",repositor.valor)
             repositor.adress = herdeiro.adress
             if(herdeiro.valor > herdeiropai.valor):
                 herdeiropai.dir = repositor 
@@ -222,15 +214,11 @@ class Arvore():
         if(atual.valor != alvo):
             if (alvo > atual.valor):
                 if(atual.dir != None):
-                    print("agora o pai é:",atual.valor)
-                    input()
                     self.remover(atual.dir, atual, alvo)
                 else:
                     return "Esse valor nao existe"
             else:
                 if(atual.esq != None):
-                    print("agora o pai é:",atual.valor)
-                    input()
                     self.remover(atual.esq, atual, alvo)
                 else:
                     return "Esse valor nao existe"
@@ -340,6 +328,7 @@ while True:
             limpa()
         elif op == 2:
             valor = digite()
+            print(f"Posicao de {valor}:")
             print(arvore.buscar(arvore.raiz, valor))
             limpa()
         elif op == 3:
@@ -369,10 +358,12 @@ while True:
             limpa()
         elif op == 9:
             valor = digite()
+            print(f"Altura do no {valor}:")
             print(arvore.pre(arvore.raiz, valor))
             limpa()
         elif op == 10:
             valor = digite()
+            print(f"Nivel do no {valor}:")
             print(arvore.nivel(arvore.raiz, valor))
             limpa()
         elif op == 11:
