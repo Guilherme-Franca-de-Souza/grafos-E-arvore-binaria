@@ -197,11 +197,11 @@ class Arvore():
                 else:
                     pai.esq = herdeiro
             else:
-                arvore.raiz = herdeiro
                 if(alvo.dir != herdeiro):
                     herdeiro.dir = alvo.dir
                 if(alvo.esq != herdeiro):
                     herdeiro.esq = alvo.esq
+                arvore.raiz = herdeiro
 
         def repoe(herdeiro, herdeiropai, repositor):
             repositor.adress = herdeiro.adress
@@ -236,6 +236,7 @@ class Arvore():
                             herdeiro = herdeiro.esq
                         else:
                             digno = True
+                    herdeiropai.esq = None
                     if(herdeiro.dir != None):
                         repoe(herdeiro, herdeiropai, herdeiro.dir)
                     herda(alvo, pai, herdeiro)
@@ -253,6 +254,7 @@ class Arvore():
                             herdeiro = herdeiro.dir
                         else:
                             digno = True
+                    herdeiropai.dir = None
                     if(herdeiro.esq != None):
                         repoe(herdeiro, herdeiropai, herdeiro.esq)
                     herda(alvo, pai, herdeiro)
