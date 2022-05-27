@@ -202,9 +202,18 @@ class Arvore():
                 if(alvo.esq != herdeiro):
                     herdeiro.esq = alvo.esq
                 arvore.raiz = herdeiro
+        
+        def reendereca(no):
+            if(no.dir != None):
+                no.dir.adress = no.adress * 10 + 1
+                reendereca(no.dir)
+            if(no.esq != None):
+                no.esq.adress = no.adress * 10
+                reendereca(no.esq)
 
         def repoe(herdeiro, herdeiropai, repositor):
             repositor.adress = herdeiro.adress
+            reendereca(repositor)
             if(herdeiro.valor > herdeiropai.valor):
                 herdeiropai.dir = repositor 
             else:
