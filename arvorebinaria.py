@@ -1,7 +1,7 @@
 import random
 import os
 
-
+'''
 class No():
     def __init__(self, valor):
         self.valor = valor
@@ -280,6 +280,8 @@ class Arvore():
 
 arvore = Arvore()
 
+
+
 array = []
 for i in range(0,15):
     array.append(i)
@@ -303,7 +305,7 @@ def digite():
 
 def limpa():
     input("\n\n\ndigite enter para continuar...")
-    #os.system("cls")
+    os.system("cls")
 
 while True:
     #os.system("cls")
@@ -382,42 +384,83 @@ while True:
             arvore.remover(arvore.raiz, None, valor)
             limpa()
     
+'''
 
 
+class Vertice():
+    def __init__(self, nome):
+        self.nome = nome
+        
+
+class Aresta():
+    def __init__(self, v1, v2):
+        self.v1 = v1
+        self.v2 = v2
 
 
+class Grafo():
+    def __init__(self):
+        self.vertices = []
+        self.arestas = []
+
+    
+    def inserirvertice(self, nome):
+        vertice = Vertice(nome)
+        self.vertices.append(vertice)
+
+    def inseriraresta(self, v1, v2):
+        v1valido = False
+        for i in range (0, len(self.vertices)):
+            if self.vertices[i].nome == v1:
+                vertice1 = self.vertices[i]
+                v1valido = True
+                break
+        if (v1valido):
+            v2valido = False
+            for i in range (0, len(self.vertices)):
+                if self.vertices[i].nome == v2:
+                    vertice2 = self.vertices[i]
+                    v2valido = True
+                    break
+            if (v2valido):
+                aresta = Aresta(vertice1, vertice2)
+                self.arestas.append(aresta)
+            else:
+                print(f'O vertice " {v2} " nao existe')
+        else:
+            print(f'O vertice " {v1} " nao existe')
+    
+    def verificaaresta(self, v1, v2):
+        v1valido = False
+        for i in range(0, len(self.arestas)):
+            if self.arestas[i].v1.nome == v1:
+                v1valido = True
+                break 
+        if (v1valido):
+            v2valido = False
+            for i in range(0, len(self.arestas)):
+                if self.arestas[i].v1.nome == v1:
+                    v2valido = True
+                    break
+            if(v2valido):
+                print("Existe uma aresta que liga os dois vertices informados")
+            else:
+               print("não existe uma aresta com os vétices informados") 
+        else:
+            print("não existe uma aresta com os vétices informados") 
 
 
+grafo = Grafo()
 
-"""
-array = []
-for i in range(0,15):
-    array.append(i)
+nome = "uva"
+grafo.inserirvertice(nome)
 
+nome = "suco"
+grafo.inserirvertice(nome)
 
+grafo.inseriraresta("uva","suco")
 
+print(grafo.arestas[0].v1.nome)
+print(grafo.arestas[0].v2.nome)
 
-for i in range(0,15):
-    valor = random.choice(array)
-    array.remove(valor)
-    no = No(valor)
-    arvore.inserir(arvore.raiz, no, 1)"""
-#print("\n\nem ordem")
-#print(arvore.totalno(arvore.raiz))
-#arvore.remover(arvore.raiz, None, 5)
-#arvore.inorder(arvore.raiz)
-
-#arvore.folhas(arvore.raiz)
-#print(f"as folhas sao: {folhas}")
-#print(arvore.pre(arvore.raiz, 4))
-
-
-#print("\n\nremove:")
-#arvore.remover(arvore.raiz, None, 5)
-
-#print("\n\nem ordem")
-#arvore.inorder(arvore.raiz)
-
-#print(arvore.nivel(arvore.raiz, 2))
-#print(f'total de nos = {arvore.totalnos}')
-#print(arvore.nomaximo(arvore.raiz))
+#print(grafo.vertices[0].nome)
