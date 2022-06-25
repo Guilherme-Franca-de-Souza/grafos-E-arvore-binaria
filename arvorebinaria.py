@@ -463,6 +463,56 @@ class Grafo():
                     self.arestas.pop(i) 
                     return("aresta removida com sucesso")
         return ('nao existe uam aresta entre os vertices informados')
+    
+    def verticesadjacentes(self, nome):
+        adjacentes = []
+        for i in range(0, len(self.arestas)):
+            if self.arestas[i].v1.nome == nome:
+               adjacentes.append(self.arestas[i].v2.nome) 
+            if self.arestas[i].v2.nome == nome:
+               adjacentes.append(self.arestas[i].v1.nome)
+
+        return adjacentes
+    
+    def grauvertice(self, nome):
+        existe = False
+        for i in range(0, len(self.vertices)):
+            if(self.vertices[i].nome == nome):
+                existe = True
+                grau = 0
+                for i in range(0, len(self.arestas)):
+                    if self.arestas[i].v1.nome == nome:
+                        grau += 1
+                    if self.arestas[i].v2.nome == nome:
+                        grau += 1
+
+
+        if existe == False:
+           return("nao existe um vertice com esse nome")
+        else:
+            return grau 
+        
+    
+    def graumedio(self):
+        qtd = len(self.vertices)
+        if qtd > 0:
+            grau = 0
+            for i in range(0, len(self.vertices)):
+                nome = self.vertices[i].nome
+                for j in range(0, len(self.arestas)):
+                    if self.arestas[j].v1.nome == nome:
+                        grau += 1
+                    if self.arestas[j].v2.nome == nome:
+                        grau += 1
+            return(grau/qtd)
+        else:
+            return 0
+
+
+    
+                
+    
+
 
                 
 
@@ -495,6 +545,31 @@ grafo.inseriraresta("banana","vitamina")
 
 print(grafo.verificaaresta("banana","vitamina"))
 
+adjacentes = grafo.verticesadjacentes("banana")
+
+print(adjacentes)
+
+print(grafo.grauvertice("banana"))
+
+
+
 print(grafo.removearesta("banana","vitamina"))
+grafo.inseriraresta("banana","vitamina")
+grafo.inseriraresta("banana","uva")
+
+
+print(grafo.grauvertice("banana"))
+print(grafo.grauvertice("uva"))
+print(grafo.grauvertice("vitamina"))
+print(grafo.grauvertice("suco"))
+
+
+print(grafo.graumedio())
+
+
+
+
+
+
 
 #print(grafo.vertices[0].nome)
