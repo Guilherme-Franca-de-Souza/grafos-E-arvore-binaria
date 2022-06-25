@@ -508,6 +508,39 @@ class Grafo():
         else:
             return 0
 
+    def grauminimo(self):
+        minimo = -1
+        for i in range(0, len(self.vertices)):
+            grau = 0
+            nome = self.vertices[i].nome
+            for j in range(0, len(self.arestas)):
+                if self.arestas[j].v1.nome == nome:
+                    grau += 1
+                if self.arestas[j].v2.nome == nome:
+                    grau += 1
+            if minimo < 0:
+                minimo = grau
+            if grau < minimo:
+                minimo = grau
+        
+        return minimo
+    
+    def graumaximo(self):
+        maximo = -1
+        for i in range(0, len(self.vertices)):
+            grau = 0
+            nome = self.vertices[i].nome
+            for j in range(0, len(self.arestas)):
+                if self.arestas[j].v1.nome == nome:
+                    grau += 1
+                if self.arestas[j].v2.nome == nome:
+                    grau += 1
+            if grau > maximo:
+                maximo = grau
+        
+        return maximo
+
+
 
     
                 
@@ -556,6 +589,7 @@ print(grafo.grauvertice("banana"))
 print(grafo.removearesta("banana","vitamina"))
 grafo.inseriraresta("banana","vitamina")
 grafo.inseriraresta("banana","uva")
+grafo.inseriraresta("vitamina","suco")
 
 
 print(grafo.grauvertice("banana"))
@@ -565,6 +599,16 @@ print(grafo.grauvertice("suco"))
 
 
 print(grafo.graumedio())
+print(grafo.grauminimo())
+
+nome = "pera"
+grafo.inserirvertice(nome)
+grafo.inseriraresta("pera","uva")
+
+print(grafo.graumaximo())
+
+
+
 
 
 
