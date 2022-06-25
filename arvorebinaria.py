@@ -403,64 +403,98 @@ class Grafo():
         self.vertices = []
         self.arestas = []
 
-    
-    def inserirvertice(self, nome):
-        vertice = Vertice(nome)
-        self.vertices.append(vertice)
 
-    def inseriraresta(self, v1, v2):
-        v1valido = False
-        for i in range (0, len(self.vertices)):
-            if self.vertices[i].nome == v1:
-                vertice1 = self.vertices[i]
-                v1valido = True
-                break
-        if (v1valido):
-            v2valido = False
-            for i in range (0, len(self.vertices)):
-                if self.vertices[i].nome == v2:
-                    vertice2 = self.vertices[i]
-                    v2valido = True
-                    break
-            if (v2valido):
-                aresta = Aresta(vertice1, vertice2)
-                self.arestas.append(aresta)
-            else:
-                print(f'O vertice " {v2} " nao existe')
-        else:
-            print(f'O vertice " {v1} " nao existe')
-    
     def verificaaresta(self, v1, v2):
-        v1valido = False
         for i in range(0, len(self.arestas)):
             if self.arestas[i].v1.nome == v1:
-                v1valido = True
-                break 
-        if (v1valido):
-            v2valido = False
-            for i in range(0, len(self.arestas)):
-                if self.arestas[i].v1.nome == v1:
-                    v2valido = True
+                if self.arestas[i].v2.nome == v2:
+                    return ("existe uma aresta entre os vertices inforamdos") 
+            if self.arestas[i].v2.nome == v1:
+                if self.arestas[i].v1.nome == v2:
+                    return ("existe uma aresta entre os vertices inforamdos") 
+        return ('nao existe uam aresta entre os vertices informados')
+
+    
+    def inserirvertice(self, nome):
+        for i in range(0, len(self.vertices)):
+            if(self.vertices[i].nome == nome):
+                return ("ja existe um vertice com esse nome")
+        vertice = Vertice(nome)
+        self.vertices.append(vertice)
+        return ("vertice criado com sucesso")
+
+
+    def inseriraresta(self, v1, v2):
+        string = self.verificaaresta(v1,v2)
+        if(string != 'existe uma aresta entre os vertices inforamdos'):            
+            v1valido = False
+            for i in range (0, len(self.vertices)):
+                if self.vertices[i].nome == v1:
+                    vertice1 = self.vertices[i]
+                    v1valido = True
                     break
-            if(v2valido):
-                print("Existe uma aresta que liga os dois vertices informados")
+            if (v1valido):
+                v2valido = False
+                for i in range (0, len(self.vertices)):
+                    if self.vertices[i].nome == v2:
+                        vertice2 = self.vertices[i]
+                        v2valido = True
+                        break
+                if (v2valido):
+                    aresta = Aresta(vertice1, vertice2)
+                    self.arestas.append(aresta)
+                else:
+                    print(f'O vertice " {v2} " nao existe')
             else:
-               print("não existe uma aresta com os vétices informados") 
+                print(f'O vertice " {v1} " nao existe')
+            return ("aresta incluida com sucesso")
         else:
-            print("não existe uma aresta com os vétices informados") 
+            return ("Ja "+string)
+    
+
+    def removearesta(self, v1, v2):
+        for i in range(0, len(self.arestas)):
+            if self.arestas[i].v1.nome == v1:
+                if self.arestas[i].v2.nome == v2:
+                    self.arestas.pop(i)
+                    return("aresta removida com sucesso")
+            if self.arestas[i].v2.nome == v1:
+                if self.arestas[i].v1.nome == v2:
+                    self.arestas.pop(i) 
+                    return("aresta removida com sucesso")
+        return ('nao existe uam aresta entre os vertices informados')
+
+                
+
+
+
+
 
 
 grafo = Grafo()
 
+
 nome = "uva"
 grafo.inserirvertice(nome)
+
 
 nome = "suco"
 grafo.inserirvertice(nome)
 
-grafo.inseriraresta("uva","suco")
+print(grafo.inseriraresta("uva","suco"))
+print(grafo.inseriraresta("uva","suco"))
 
-print(grafo.arestas[0].v1.nome)
-print(grafo.arestas[0].v2.nome)
+
+nome = "banana"
+grafo.inserirvertice(nome)
+
+nome = "vitamina"
+grafo.inserirvertice(nome)
+
+grafo.inseriraresta("banana","vitamina")
+
+print(grafo.verificaaresta("banana","vitamina"))
+
+print(grafo.removearesta("banana","vitamina"))
 
 #print(grafo.vertices[0].nome)
