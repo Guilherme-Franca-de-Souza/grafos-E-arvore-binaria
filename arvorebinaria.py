@@ -555,6 +555,8 @@ class Grafo():
             return("nao exsitem vertices no grafo")
     
     def conexo(self, nome, lista1, lista2):
+        print(lista2)
+        
         '''
         verifica se ele ta na lista de verificados pra evitar q o grau dele seja resetado na lista 2
            nao esquece de perguntar se o laço encontrou um adjacente não verificado
@@ -564,13 +566,20 @@ class Grafo():
         percorre a lista, se o nome bater, decrementa
         logo depois exlui os zerados
 
+
+        O erro é: se ele não acha ninguem, ele nao decrementa grau, ta errado isso
+
         '''
+
+        print(f'{nome} entrou')
+
         verificado = False
         for j in range(0,len(lista1)):
             if(lista1[j] == nome):
                 verificado = True
                 break
         if verificado == False:
+            print(f'{nome} nao eh verificado ainda')
             lista1.append(nome)
             grau = 0
             for i in range(0, len(self.arestas)):
@@ -580,41 +589,63 @@ class Grafo():
                     grau += 1
 
             if grau > 1:
+                print(f'{nome} tem grau {grau}')
                 array = [nome, grau]
-                lista2.append(array)  
+                lista2.append(array)
 
+
+        encontrou = False
         for i in range(0, len(self.arestas)):
             if self.arestas[i].v1.nome == nome:
+                print(f'{nome} tem como adjacente o {self.arestas[i].v2.nome}')
                 verificado = False
                 for j in range(0,len(lista1)):
                     if(lista1[j] == self.arestas[i].v2.nome):
                         verificado = True
                         break
                 if verificado == False:
-                    for i in range(0,len(lista2)):
-                        if lista2[i][0] == nome:
-                            lista2[i][1] -= 1
+                    encontrou = True
+                    print(f'o {self.arestas[i].v2.nome} nao eh verificado')
+                    for k in range(0,len(lista2)):
+                        if lista2[k][0] == nome:
+                            lista2[k][1] -= 1
+                            print(f'decrementa o grau de {nome}')
                             break
-                    for i in range(0, len(lista2)):
-                        if lista2[i][1] < 1:
-                            lista2.pop(i)
+                    for k in range(0, len(lista2)):
+                        if lista2[k][1] < 1:
+                            print(f'{lista2[k][0]} tem grau zerado, portanto, vai ser retirado da lista2')
+                            lista2.pop(k)
                     return 1 + self.conexo(self.arestas[i].v2.nome, lista1, lista2)
-                    
+
             if self.arestas[i].v2.nome == nome:
+                print(f'{nome} tem como adjacente o {self.arestas[i].v1.nome}')
                 verificado = False
                 for j in range(0,len(lista1)):
                     if(lista1[j] == self.arestas[i].v1.nome):
                         verificado = True
                         break
                 if verificado == False:
-                    for i in range(0,len(lista2)):
-                        if lista2[i][0] == nome:
-                            lista2[i][1] -= 1
+                    encontrou = True
+                    print(f'o {self.arestas[i].v1.nome} nao eh verificado')
+                    for k in range(0,len(lista2)):
+                        if lista2[k][0] == nome:
+                            lista2[k][1] -= 1
+                            print(f'decrementa o grau de {nome}')
                             break
-                    for i in range(0, len(lista2)):
-                        if lista2[i][1] < 1:
-                            lista2.pop(i)
+                    for k in range(0, len(lista2)):
+                        if lista2[k][1] < 1:
+                            print(f'{lista2[k][0]} tem grau zerado, portanto, vai ser retirado da lista2')
+                            lista2.pop(k)
                     return 1 + self.conexo(self.arestas[i].v1.nome, lista1, lista2)
+        
+        if encontrou == False:
+            print(f"{nome} nao encontrou nenhum adjacente nao verificado")
+            for l in range(0, len(lista2)):
+                if lista2[l][0] == nome:
+                    lista2.pop(l)
+                    print("entao ele foi retirado da lista 2")
+                    break
+            
         
 
         if(len(lista2) > 0):
@@ -663,36 +694,36 @@ grafo.inserirvertice(nome)
 
 grafo.inseriraresta("banana","vitamina")
 
-print(grafo.verificaaresta("banana","vitamina"))
+grafo.verificaaresta("banana","vitamina")
 
 adjacentes = grafo.verticesadjacentes("banana")
 
-print(adjacentes)
-
-print(grafo.grauvertice("banana"))
 
 
+grafo.grauvertice("banana")
 
-print(grafo.removearesta("banana","vitamina"))
+
+
+grafo.removearesta("banana","vitamina")
 grafo.inseriraresta("banana","vitamina")
 grafo.inseriraresta("banana","uva")
 grafo.inseriraresta("vitamina","suco")
 
 
-print(grafo.grauvertice("banana"))
-print(grafo.grauvertice("uva"))
-print(grafo.grauvertice("vitamina"))
-print(grafo.grauvertice("suco"))
+grafo.grauvertice("banana")
+grafo.grauvertice("uva")
+grafo.grauvertice("vitamina")
+grafo.grauvertice("suco")
 
 
-print(grafo.graumedio())
-print(grafo.grauminimo())
+grafo.graumedio()
+grafo.grauminimo()
 
 nome = "pera"
 grafo.inserirvertice(nome)
 grafo.inseriraresta("pera","uva")
 
-print(grafo.graumaximo())
+grafo.graumaximo()
 
 grafo.verificaconexo()
 grafo.inseriraresta("vitamina","couve")
