@@ -537,8 +537,95 @@ class Grafo():
                     grau += 1
             if grau > maximo:
                 maximo = grau
-        
         return maximo
+
+
+
+    def verificaconexo(self):
+        qtd = len(self.vertices)
+        if qtd > 0:
+            lista = []
+            conexos = self.conexo(self.vertices[0].nome, lista)
+            if qtd > conexos:
+                print(qtd," :",conexos,"grafo nao conexo")
+            else:
+                print(qtd," :",conexos,"grafo conexo")
+        else:
+            return("nao exsitem vertices no grafo")
+    
+    def conexo(self, nome, lista1, lista2):
+        '''
+        verifica se ele ta na lista de verificados pra evitar q o grau dele seja resetado na lista 2
+           nao esquece de perguntar se o laço encontrou um adjacente não verificado
+        pq se ele não encontrou, vamos recorrer ao item da lista 2
+        a lista 2 é uma matriz, contém nome e grau 
+
+        percorre a lista, se o nome bater, decrementa
+        logo depois exlui os zerados
+
+        '''
+        verificado = False
+        for j in range(0,len(lista1)):
+            if(lista1[j] == self.arestas[i].v2.nome):
+                verificado = True
+                break
+        if verificado == False:
+            grau = 0
+            for i in range(0, len(self.arestas)):
+                if self.arestas[i].v1.nome == nome:
+                    grau += 1
+                if self.arestas[i].v2.nome == nome:
+                    grau += 1
+
+            if grau > 1:
+                array = [nome, grau]
+                lista2.append(array)
+        
+
+        for i in range(0, len(self.arestas)):
+            if self.arestas[i].v1.nome == nome:
+                verificado = False
+                for j in range(0,len(lista1)):
+                    if(lista1[j] == self.arestas[i].v2.nome):
+                        verificado = True
+                        break
+                if verificado == False:
+                    lista1.append(self.arestas[i].v2.nome)
+
+                    for i in range(0,len(lista2)):
+                        if lista2[i][0] == nome:
+                            lista2[i][1] -= 1
+                            break
+                    for i in range(0, len(lista2)):
+                        if lista2[i][1] < 1:
+                            lista2.pop(i)
+                    return 1 + self.conexo(self.arestas[i].v2.nome, lista1, lista2)
+                    
+            if self.arestas[i].v2.nome == nome:
+                verificado = False
+                for j in range(0,len(lista1)):
+                    if(lista1[j] == self.arestas[i].v1.nome):
+                        verificado = True
+                        break
+                if verificado == False:
+                    lista1.append(self.arestas[i].v1.nome)
+
+                    for i in range(0,len(lista2)):
+                        if lista2[i][0] == nome:
+                            lista2[i][1] -= 1
+                            break
+                    for i in range(0, len(lista2)):
+                        if lista2[i][1] < 1:
+                            lista2.pop(i)
+                    return 1 + self.conexo(self.arestas[i].v1.nome, lista1, lista2)
+        
+
+        if(len(lista2) > 0):
+            return 1 + self.conexo(lista2[0][0], lista1, lista2)
+        
+        return 0
+               
+
 
 
 
@@ -574,6 +661,9 @@ grafo.inserirvertice(nome)
 nome = "vitamina"
 grafo.inserirvertice(nome)
 
+nome = "couve"
+grafo.inserirvertice(nome)
+
 grafo.inseriraresta("banana","vitamina")
 
 print(grafo.verificaaresta("banana","vitamina"))
@@ -607,8 +697,9 @@ grafo.inseriraresta("pera","uva")
 
 print(grafo.graumaximo())
 
-
-
+grafo.verificaconexo()
+grafo.inseriraresta("vitamina","couve")
+grafo.verificaconexo()
 
 
 
