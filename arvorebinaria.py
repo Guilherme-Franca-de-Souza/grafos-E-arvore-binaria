@@ -544,8 +544,9 @@ class Grafo():
     def verificaconexo(self):
         qtd = len(self.vertices)
         if qtd > 0:
-            lista = []
-            conexos = self.conexo(self.vertices[0].nome, lista)
+            lista1 = []
+            lista2 = []
+            conexos = 1 + self.conexo(self.vertices[0].nome, lista1, lista2)
             if qtd > conexos:
                 print(qtd," :",conexos,"grafo nao conexo")
             else:
@@ -566,10 +567,11 @@ class Grafo():
         '''
         verificado = False
         for j in range(0,len(lista1)):
-            if(lista1[j] == self.arestas[i].v2.nome):
+            if(lista1[j] == nome):
                 verificado = True
                 break
         if verificado == False:
+            lista1.append(nome)
             grau = 0
             for i in range(0, len(self.arestas)):
                 if self.arestas[i].v1.nome == nome:
@@ -579,8 +581,7 @@ class Grafo():
 
             if grau > 1:
                 array = [nome, grau]
-                lista2.append(array)
-        
+                lista2.append(array)  
 
         for i in range(0, len(self.arestas)):
             if self.arestas[i].v1.nome == nome:
@@ -590,8 +591,6 @@ class Grafo():
                         verificado = True
                         break
                 if verificado == False:
-                    lista1.append(self.arestas[i].v2.nome)
-
                     for i in range(0,len(lista2)):
                         if lista2[i][0] == nome:
                             lista2[i][1] -= 1
@@ -608,8 +607,6 @@ class Grafo():
                         verificado = True
                         break
                 if verificado == False:
-                    lista1.append(self.arestas[i].v1.nome)
-
                     for i in range(0,len(lista2)):
                         if lista2[i][0] == nome:
                             lista2[i][1] -= 1
