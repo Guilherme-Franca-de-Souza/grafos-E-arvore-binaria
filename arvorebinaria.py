@@ -555,31 +555,12 @@ class Grafo():
             return("nao exsitem vertices no grafo")
     
     def conexo(self, nome, lista1, lista2):
-        print(lista2)
-        
-        '''
-        verifica se ele ta na lista de verificados pra evitar q o grau dele seja resetado na lista 2
-           nao esquece de perguntar se o laço encontrou um adjacente não verificado
-        pq se ele não encontrou, vamos recorrer ao item da lista 2
-        a lista 2 é uma matriz, contém nome e grau 
-
-        percorre a lista, se o nome bater, decrementa
-        logo depois exlui os zerados
-
-
-        O erro é: se ele não acha ninguem, ele nao decrementa grau, ta errado isso
-
-        '''
-
-        print(f'{nome} entrou')
-
         verificado = False
         for j in range(0,len(lista1)):
             if(lista1[j] == nome):
                 verificado = True
                 break
         if verificado == False:
-            print(f'{nome} nao eh verificado ainda')
             lista1.append(nome)
             grau = 0
             for i in range(0, len(self.arestas)):
@@ -589,7 +570,6 @@ class Grafo():
                     grau += 1
 
             if grau > 1:
-                print(f'{nome} tem grau {grau}')
                 array = [nome, grau]
                 lista2.append(array)
 
@@ -597,7 +577,6 @@ class Grafo():
         encontrou = False
         for i in range(0, len(self.arestas)):
             if self.arestas[i].v1.nome == nome:
-                print(f'{nome} tem como adjacente o {self.arestas[i].v2.nome}')
                 verificado = False
                 for j in range(0,len(lista1)):
                     if(lista1[j] == self.arestas[i].v2.nome):
@@ -605,21 +584,16 @@ class Grafo():
                         break
                 if verificado == False:
                     encontrou = True
-                    print(f'o {self.arestas[i].v2.nome} nao eh verificado')
                     for k in range(0,len(lista2)):
                         if lista2[k][0] == nome:
                             lista2[k][1] -= 1
-                            print(f'decrementa o grau de {nome}')
                             break
                     for k in range(0, len(lista2)):
                         if lista2[k][1] < 1:
-                            print(f'{lista2[k][0]} tem grau zerado, portanto, vai ser retirado da lista2')
                             lista2.pop(k)
-                    print(f'@@@ SOMA 1 por causa de {self.arestas[i].v2.nome}')
                     return 0 + self.conexo(self.arestas[i].v2.nome, lista1, lista2)
 
             if self.arestas[i].v2.nome == nome:
-                print(f'{nome} tem como adjacente o {self.arestas[i].v1.nome}')
                 verificado = False
                 for j in range(0,len(lista1)):
                     if(lista1[j] == self.arestas[i].v1.nome):
@@ -627,25 +601,19 @@ class Grafo():
                         break
                 if verificado == False:
                     encontrou = True
-                    print(f'o {self.arestas[i].v1.nome} nao eh verificado')
                     for k in range(0,len(lista2)):
                         if lista2[k][0] == nome:
                             lista2[k][1] -= 1
-                            print(f'decrementa o grau de {nome}')
                             break
                     for k in range(0, len(lista2)):
                         if lista2[k][1] < 1:
-                            print(f'{lista2[k][0]} tem grau zerado, portanto, vai ser retirado da lista2')
                             lista2.pop(k)
-                    print(f'@@@ SOMA 1 por causa de {self.arestas[i].v1.nome}')
                     return 0 + self.conexo(self.arestas[i].v1.nome, lista1, lista2)
         
         if encontrou == False:
-            print(f"{nome} nao encontrou nenhum adjacente nao verificado")
             for l in range(0, len(lista2)):
                 if lista2[l][0] == nome:
                     lista2.pop(l)
-                    print("entao ele foi retirado da lista 2")
                     break
             
         
