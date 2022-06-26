@@ -485,8 +485,6 @@ class Grafo():
                         grau += 1
                     if self.arestas[i].v2.nome == nome:
                         grau += 1
-
-
         if existe == False:
            return("nao existe um vertice com esse nome")
         else:
@@ -643,6 +641,38 @@ class Grafo():
             linha = []
 
         return matriz
+    
+
+    def verificaeuler(self):
+        qtd = len(self.vertices)
+        if qtd > 0:
+            lista1 = []
+            lista2 = []
+            conexos = self.conexo(self.vertices[0].nome, lista1, lista2)
+            if qtd > conexos:
+                print("Esse grafo nao eh conexo, portanto nao tem caminho de euler")
+            else:
+                print(self.euler())
+                
+        else:
+            return("nao exsitem vertices no grafo")
+
+    def euler(self):
+        impares = 0
+        for i in range(0,len(self.vertices)):
+            resultado = self.grauvertice(self.vertices[i].nome)
+            if(resultado%2 != 0):
+                impares += 1
+        
+        if impares != 2 and impares != 0:
+            return ("esse grafo nao tem caminho de euler")
+        else:
+            return ("Esse grafo tem caminho de euler") 
+            
+                
+                
+                
+
 
 
     
@@ -674,61 +704,61 @@ class Grafo():
 grafo = Grafo()
 
 
-nome = "uva"
+nome = "A"
 grafo.inserirvertice(nome)
 
 
-nome = "suco"
+nome = "B"
 grafo.inserirvertice(nome)
 
-print(grafo.inseriraresta("uva","suco"))
-print(grafo.inseriraresta("uva","suco"))
+print(grafo.inseriraresta("A","B"))
+print(grafo.inseriraresta("A","B"))
 
 
-nome = "banana"
+nome = "C"
 grafo.inserirvertice(nome)
 
-nome = "vitamina"
+nome = "D"
 grafo.inserirvertice(nome)
 
-nome = "couve"
+nome = "E"
 grafo.inserirvertice(nome)
 
-grafo.inseriraresta("banana","vitamina")
+grafo.inseriraresta("C","D")
 
-grafo.verificaaresta("banana","vitamina")
+grafo.verificaaresta("C","D")
 
-adjacentes = grafo.verticesadjacentes("banana")
-
-
-
-grafo.grauvertice("banana")
+adjacentes = grafo.verticesadjacentes("C")
 
 
 
-grafo.removearesta("banana","vitamina")
-grafo.inseriraresta("banana","vitamina")
-grafo.inseriraresta("banana","uva")
-grafo.inseriraresta("vitamina","suco")
+grafo.grauvertice("C")
 
 
-grafo.grauvertice("banana")
-grafo.grauvertice("uva")
-grafo.grauvertice("vitamina")
-grafo.grauvertice("suco")
+
+grafo.removearesta("C","D")
+grafo.inseriraresta("C","D")
+grafo.inseriraresta("C","A")
+grafo.inseriraresta("D","B")
+
+
+grafo.grauvertice("C")
+grafo.grauvertice("A")
+grafo.grauvertice("D")
+grafo.grauvertice("B")
 
 
 grafo.graumedio()
 grafo.grauminimo()
 
-nome = "pera"
+nome = "F"
 grafo.inserirvertice(nome)
-grafo.inseriraresta("pera","uva")
+grafo.inseriraresta("F","A")
 
 grafo.graumaximo()
 
 grafo.verificaconexo()
-grafo.inseriraresta("vitamina","couve")
+grafo.inseriraresta("D","E")
 grafo.verificaconexo()
 
 
@@ -736,7 +766,10 @@ resultado = grafo.matriz()
 
 print("matriz de adjacencias")
 for i in resultado:
-    print(i)
+    print(i)  
+
+
+grafo.verificaeuler()
 
 
 
