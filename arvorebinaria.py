@@ -548,9 +548,9 @@ class Grafo():
             lista2 = []
             conexos = self.conexo(self.vertices[0].nome, lista1, lista2)
             if qtd > conexos:
-                print(qtd," :",conexos,"grafo nao conexo")
+                print("grafo nao conexo")
             else:
-                print(qtd," :",conexos,"grafo conexo")
+                print("grafo conexo")
         else:
             return("nao exsitem vertices no grafo")
     
@@ -622,6 +622,38 @@ class Grafo():
             return 1 + self.conexo(lista2[0][0], lista1, lista2)
         
         return 1
+
+
+
+    def matriz(self):
+        nomes = []
+        for i in range(0, len(self.vertices)):
+            nomes.append(self.vertices[i].nome)
+
+        matriz = []
+        linha = []
+        for i in range(0, len(nomes)):
+            for j in range(0, len(nomes)):
+                resultado = self.verificaaresta(nomes[i],nomes[j])
+                if resultado == "existe uma aresta entre os vertices inforamdos":
+                    linha.append(1)
+                else:
+                    linha.append(0)
+            matriz.append(linha)
+            linha = []
+
+        return matriz
+
+
+    
+                
+        
+                    
+
+
+
+    
+
                
 
 
@@ -698,6 +730,14 @@ grafo.graumaximo()
 grafo.verificaconexo()
 grafo.inseriraresta("vitamina","couve")
 grafo.verificaconexo()
+
+
+resultado = grafo.matriz()
+
+print("matriz de adjacencias")
+for i in resultado:
+    print(i)
+
 
 
 
