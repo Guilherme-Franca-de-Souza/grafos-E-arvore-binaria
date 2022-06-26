@@ -546,7 +546,7 @@ class Grafo():
         if qtd > 0:
             lista1 = []
             lista2 = []
-            conexos = 1 + self.conexo(self.vertices[0].nome, lista1, lista2)
+            conexos = self.conexo(self.vertices[0].nome, lista1, lista2)
             if qtd > conexos:
                 print(qtd," :",conexos,"grafo nao conexo")
             else:
@@ -615,7 +615,8 @@ class Grafo():
                         if lista2[k][1] < 1:
                             print(f'{lista2[k][0]} tem grau zerado, portanto, vai ser retirado da lista2')
                             lista2.pop(k)
-                    return 1 + self.conexo(self.arestas[i].v2.nome, lista1, lista2)
+                    print(f'@@@ SOMA 1 por causa de {self.arestas[i].v2.nome}')
+                    return 0 + self.conexo(self.arestas[i].v2.nome, lista1, lista2)
 
             if self.arestas[i].v2.nome == nome:
                 print(f'{nome} tem como adjacente o {self.arestas[i].v1.nome}')
@@ -636,7 +637,8 @@ class Grafo():
                         if lista2[k][1] < 1:
                             print(f'{lista2[k][0]} tem grau zerado, portanto, vai ser retirado da lista2')
                             lista2.pop(k)
-                    return 1 + self.conexo(self.arestas[i].v1.nome, lista1, lista2)
+                    print(f'@@@ SOMA 1 por causa de {self.arestas[i].v1.nome}')
+                    return 0 + self.conexo(self.arestas[i].v1.nome, lista1, lista2)
         
         if encontrou == False:
             print(f"{nome} nao encontrou nenhum adjacente nao verificado")
@@ -651,7 +653,7 @@ class Grafo():
         if(len(lista2) > 0):
             return 1 + self.conexo(lista2[0][0], lista1, lista2)
         
-        return 0
+        return 1
                
 
 
