@@ -1,7 +1,8 @@
+'''
+
 import random
 import os
 
-'''
 class No():
     def __init__(self, valor):
         self.valor = valor
@@ -386,6 +387,7 @@ while True:
     
 '''
 
+import os
 
 class Vertice():
     def __init__(self, nome):
@@ -451,7 +453,28 @@ class Grafo():
         else:
             return ("Ja "+string)
     
-
+    
+    def removervertice(self, nome):
+        for i in range(0, len(self.arestas)):
+            if self.arestas[i].v1.nome == nome:
+                self.arestas.pop(i)
+            if self.arestas[i].v2.nome == nome:
+                self.arestas.pop(i) 
+        
+        existe = False
+        for i in rane(0, len(self.vertices)):
+            if self.vertices[i].nome == nome:
+                existe = True
+                self.vertice.pop(i)
+                break
+        
+        if existe == False:
+            return "nao existe um vertice com esse nome"
+        else:
+            return "vertice removido com sucesso"
+    
+        
+    
     def removearesta(self, v1, v2):
         for i in range(0, len(self.arestas)):
             if self.arestas[i].v1.nome == v1:
@@ -542,9 +565,8 @@ class Grafo():
     def verificaconexo(self):
         qtd = len(self.vertices)
         if qtd > 0:
-            lista1 = []
-            lista2 = []
-            conexos = self.conexo(self.vertices[0].nome, lista1, lista2)
+            lista = []
+            conexos = self.conexo(self.vertices[0].nome, lista)
             if qtd > conexos:
                 print("grafo nao conexo")
             else:
@@ -552,77 +574,44 @@ class Grafo():
         else:
             return("nao exsitem vertices no grafo")
     
-    def conexo(self, nome, lista1, lista2):
+    def conexo(self, nome, lista):
         verificado = False
-        for j in range(0,len(lista1)):
-            if(lista1[j] == nome):
+        for i in range(0,len(lista)):
+            if(nome == lista[i]):
                 verificado = True
                 break
         if verificado == False:
-            lista1.append(nome)
-            grau = 0
-            for i in range(0, len(self.arestas)):
-                if self.arestas[i].v1.nome == nome:
-                    grau += 1
-                if self.arestas[i].v2.nome == nome:
-                    grau += 1
-
-            if grau > 1:
-                array = [nome, grau]
-                lista2.append(array)
-
-
-        encontrou = False
-        for i in range(0, len(self.arestas)):
-            if self.arestas[i].v1.nome == nome:
-                verificado = False
-                for j in range(0,len(lista1)):
-                    if(lista1[j] == self.arestas[i].v2.nome):
-                        verificado = True
-                        break
-                if verificado == False:
-                    encontrou = True
-                    for k in range(0,len(lista2)):
-                        if lista2[k][0] == nome:
-                            lista2[k][1] -= 1
-                            break
-                    for k in range(0, len(lista2)):
-                        if lista2[k][1] < 1:
-                            lista2.pop(k)
-                    return 0 + self.conexo(self.arestas[i].v2.nome, lista1, lista2)
-
-            if self.arestas[i].v2.nome == nome:
-                verificado = False
-                for j in range(0,len(lista1)):
-                    if(lista1[j] == self.arestas[i].v1.nome):
-                        verificado = True
-                        break
-                if verificado == False:
-                    encontrou = True
-                    for k in range(0,len(lista2)):
-                        if lista2[k][0] == nome:
-                            lista2[k][1] -= 1
-                            break
-                    for k in range(0, len(lista2)):
-                        if lista2[k][1] < 1:
-                            lista2.pop(k)
-                    return 0 + self.conexo(self.arestas[i].v1.nome, lista1, lista2)
-        
-        if encontrou == False:
-            for l in range(0, len(lista2)):
-                if lista2[l][0] == nome:
-                    lista2.pop(l)
-                    break
             
-        
-
-        if(len(lista2) > 0):
-            return 1 + self.conexo(lista2[0][0], lista1, lista2)
-        
-        return 1
-
-
-
+            lista.append(nome)
+            adjacentes = []
+            for j in range(0, len(self.arestas)):
+                if self.arestas[j].v1.nome == nome:
+                    verificado = False
+                    for i in range(0,len(lista)):
+                        if(self.arestas[j].v2.nome == lista[i]):
+                            verificado = True
+                            break
+                    if verificado == False:
+                        adjacentes.append(self.arestas[j].v2.nome)
+    
+                if self.arestas[j].v2.nome == nome:
+                    verificado = False
+                    for i in range(0,len(lista)):
+                        if(self.arestas[j].v1.nome == lista[i]):
+                            verificado = True
+                            break
+                    if verificado == False:
+                        adjacentes.append(self.arestas[j].v1.nome)
+                    
+            for i in range(0,len(adjacentes)):
+                self.conexo(adjacentes[i],lista)
+                
+            return len(lista)
+                    
+            
+            
+            
+            
     def matriz(self):
         nomes = []
         for i in range(0, len(self.vertices)):
@@ -646,9 +635,8 @@ class Grafo():
     def verificaeuler(self):
         qtd = len(self.vertices)
         if qtd > 0:
-            lista1 = []
-            lista2 = []
-            conexos = self.conexo(self.vertices[0].nome, lista1, lista2)
+            lista = []
+            conexos = self.conexo(self.vertices[0].nome, lista)
             if qtd > conexos:
                 print("Esse grafo nao eh conexo, portanto nao tem caminho de euler")
             else:
@@ -681,101 +669,112 @@ class Grafo():
                     
 
 
-
+grafo = Grafo()
     
-
+def digite(qtd):
+    if qtd == 0:
+        print("Digite o nome:")
+        valor = input()
+        return valor
+        limpa()
+    if qtd == 1:
+        print("Digite o nome do primeiro vertice:")
+        valor = input()
+        return valor
+        limpa()
+    if qtd == 2:
+        print("Digite o nome do segundo vertice:")
+        valor = input()
+        return valor
+        
+    
+        
+        
+def limpa():
+    input("\n\n\ndigite enter para continuar...")
+    os.system("clear")
                
 
 
-
-
+while True:
+    #os.system("cls")
+    print("Digite uma opção:\n")
+    print("(0) - Sair\n")
+    print("(1) - Inserir verice")
+    print("(2) - Inserir aresta")
+    print("(3) - Verificar existencia de aresta")
+    print("(4) - Remover vertice")
+    print("(5) - Remover aresta")
+    print("(6) - Verificar grau de vertice")
+    print("(7) - Verificar vertices adjacentes")
+    print("(8) - Mostrar grau medio")
+    print("(9) - Mostrar grau maximo")
+    print("(10) - Mostrar grau minimo")
+    print("(11) - Verificar se o grafo eh conexo")
+    print("(12) - Verificar se existe caminho de euler no grafo")
+    print("(13) - Matriz de adjacencias")
     
-                
+    
+    
+    
     
 
-
-                
-
-
-
-
-
-
-grafo = Grafo()
-
-
-nome = "A"
-grafo.inserirvertice(nome)
-
-
-nome = "B"
-grafo.inserirvertice(nome)
-
-print(grafo.inseriraresta("A","B"))
-print(grafo.inseriraresta("A","B"))
-
-
-nome = "C"
-grafo.inserirvertice(nome)
-
-nome = "D"
-grafo.inserirvertice(nome)
-
-nome = "E"
-grafo.inserirvertice(nome)
-
-grafo.inseriraresta("C","D")
-
-grafo.verificaaresta("C","D")
-
-adjacentes = grafo.verticesadjacentes("C")
-
-
-
-grafo.grauvertice("C")
-
-
-
-grafo.removearesta("C","D")
-grafo.inseriraresta("C","D")
-grafo.inseriraresta("C","A")
-grafo.inseriraresta("D","B")
-
-
-grafo.grauvertice("C")
-grafo.grauvertice("A")
-grafo.grauvertice("D")
-grafo.grauvertice("B")
-
-
-grafo.graumedio()
-grafo.grauminimo()
-
-nome = "F"
-grafo.inserirvertice(nome)
-grafo.inseriraresta("F","A")
-
-grafo.graumaximo()
-
-grafo.verificaconexo()
-grafo.inseriraresta("D","E")
-grafo.verificaconexo()
-
-
-resultado = grafo.matriz()
-
-print("matriz de adjacencias")
-for i in resultado:
-    print(i)  
-
-
-grafo.verificaeuler()
-
-
-
-
-
-
-
-
-#print(grafo.vertices[0].nome)
+    op = input()
+    
+    op = int(op)
+    if(op < 0 or op > 11):
+        print("opcao invalida")
+    else:
+        if op == 0:
+            limpa()
+            break
+        elif op == 1:
+            valor = digite(0)
+            vertice = Vertice(valor)
+            print(grafo.inserirvertice(valor))
+            limpa()
+        elif op == 2:
+            valor1 = digite(1)
+            valor2 = digite(2)
+            print(grafo.inseriraresta(valor1,valor2))
+            limpa()
+        elif op == 3:
+            valor1 = digite(1)
+            valor2 = digite(2)
+            print(grafo.verificaaresta(valor1,valor2))
+            limpa()
+        elif op == 4:
+            valor = digite(0)
+            print(grafo.removervertice(valor))
+            limpa()
+        elif op == 5:
+            valor1 = digite(1)
+            valor2 = digite(2)
+            print(grafo.removearesta(valor1,valor2))
+            limpa()
+        elif op == 6:
+            valor = digite(0)
+            print(grafo.grauvertice(valor))
+            limpa()
+        elif op == 7:
+            valor = digite(0)
+            print(grafo.verticesadjacentes(valor))
+            limpa()
+        elif op == 8:
+            print(grafo.graumedio())
+            limpa()
+        elif op == 9:
+            print(grafo.graumaximo())
+            limpa()
+        elif op == 10:
+            print(grafo.grauminimo())
+            limpa()
+        elif op == 11:
+            grafo.verificaconexo()
+            limpa()
+        elif op == 12:
+            print(grafo.verificaeuler())
+            limpa()
+        elif op == 13:
+            print(grafo.matriz())
+            limpa()
