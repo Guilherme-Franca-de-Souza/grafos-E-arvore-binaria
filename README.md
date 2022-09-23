@@ -1,2 +1,2 @@
 # arvore-binaria
-Manipulação de árvores binárias
+Arvore binária comentada em cima, e grafos em baixo.
